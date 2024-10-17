@@ -52,7 +52,139 @@
 @layer base {
   * {
     @apply border-border;
+    @apply rounded-md;
+    @apply transition-colors;
+    @apply ring-offset-background;
+
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
   }
+  :focus-visible {
+  /* :focus { */
+    @apply outline-none;
+    @apply ring-2;
+    @apply ring-ring;
+    @apply ring-offset-2;
+
+    outline: none;
+  }
+  ::placeholder {
+    @apply text-muted-foreground;
+  }
+  :disabled {
+    @apply cursor-not-allowed;
+    @apply opacity-50;
+  }
+
+  input, textarea {
+    @apply border;
+    @apply border-input;
+    @apply bg-background;
+
+    @apply px-3;
+    @apply py-2;
+    @apply text-sm;
+
+    @apply flex;
+    @apply w-full;
+  }
+  input {
+    @apply h-10;
+    
+    @apply file:text-foreground;
+    @apply file:border-0;
+    @apply file:bg-transparent;
+    @apply file:text-sm;
+    @apply file:font-medium;
+  }
+  textarea {
+    @apply min-h-[80px];
+  }
+
+  button, button.primary, as-button {
+    @apply inline-flex;
+    @apply items-center;
+    @apply justify-center;
+    @apply gap-2;
+
+    @apply whitespace-nowrap;
+    @apply text-sm;
+    @apply font-medium;
+
+    @apply px-4;
+    @apply py-2;
+    @apply h-10;
+    @apply shrink-0;
+
+    @apply bg-primary;
+    @apply text-primary-foreground;
+    @apply hover:bg-primary/90;
+
+    @apply [&_svg]:pointer-events-none;
+  }
+  button:not(.unapply-svg), button.primary:not(.unapply-svg), as-button:not(.unapply-svg) {
+    @apply [&_svg]:size-4;
+    @apply [&_svg]:shrink-0;
+  }
+  as-button.secondary,
+  button.secondary {
+    @apply bg-secondary;
+    @apply text-inherit;
+    @apply text-secondary-foreground;
+    @apply hover:bg-secondary/80;
+  }
+  as-button.destructive,
+  button.destructive {
+    @apply bg-destructive;
+    @apply text-inherit;
+    @apply text-destructive-foreground;
+    @apply hover:bg-destructive/90;
+  }
+  as-button.outline,
+  button.outline {
+    @apply border;
+    @apply border-input;
+    @apply bg-background;
+    @apply text-inherit;
+    @apply hover:bg-accent;
+    @apply hover:text-accent-foreground;
+  }
+  as-button.ghost,
+  button.ghost {
+    @apply bg-transparent;
+    @apply text-inherit;
+    @apply hover:bg-accent;
+    @apply hover:text-accent-foreground;
+  }
+  as-button.link,
+  button.link {
+    @apply bg-transparent;
+    @apply text-primary;
+    @apply underline-offset-4;
+    @apply hover:underline;
+    @apply hover:bg-transparent;
+  }
+  as-button.icon,
+  button.icon {
+    @apply border;
+    @apply border-input;
+    @apply bg-background;
+    @apply text-inherit;
+    @apply hover:bg-accent;
+    @apply hover:text-accent-foreground;
+
+    @apply w-10;
+  }
+
+  .card {
+    @apply rounded-lg;
+    @apply border;
+    @apply bg-card;
+    @apply text-card-foreground;
+    @apply shadow-sm;
+  }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -82,8 +214,6 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -91,23 +221,4 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: hsl(var(--accent));
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
