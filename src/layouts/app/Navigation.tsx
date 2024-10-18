@@ -37,6 +37,7 @@ const ROUTES = [
 export default function Navigation({ open }: { open: boolean }) {
   const animation = useAnimation({ duration: 300, deps: [open] }) 
   const location = useLocation()
+  const fullyOpen = animation.state !== "entered"
 
   return (
     <div className="grid grid-rows-[1fr,auto]">
@@ -71,9 +72,12 @@ export default function Navigation({ open }: { open: boolean }) {
         </ul>
       </nav>
 
-      <footer className="flex justify-center items-start gap-2 px-4 py-2 flex-col">
-        <ThemeToggle short={animation.state !== "entered"} />
-        <p className={cn("text-sm text-foreground/80", animation.state !== "entered" && "w-0 overflow-hidden whitespace-nowrap")}>© 2024 Filip LLC</p>
+      <footer className={cn(
+        "flex justify-center gap-2 px-4 py-2 flex-col",
+        fullyOpen ? "items-center" : "items-start"
+      )}>
+        <ThemeToggle short={fullyOpen} />
+        <p className={cn("text-sm text-foreground/80", fullyOpen && "w-0 overflow-hidden whitespace-nowrap")}>© 2024 Filip LLC</p>
       </footer>
     </div>
   )
