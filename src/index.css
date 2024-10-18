@@ -149,7 +149,7 @@
     @apply min-h-[80px];
   }
 
-  button, button.primary, as-button {
+  as-button {
     @apply transition-colors;
     @apply inline-flex;
     @apply items-center;
@@ -167,31 +167,28 @@
 
     @apply [&_svg]:pointer-events-none;
   }
-  button:not(.unapply-color), as-button:not(.unapply-color) {
+  as-button:not(.unapply-color) {
     @apply bg-primary;
     @apply text-primary-foreground;
     @apply hover:bg-primary/90;
   }
-  button:not(.unapply-svg), as-button:not(.unapply-svg) {
+  as-button:not(.unapply-svg) {
     @apply [&_svg]:size-4;
     @apply [&_svg]:shrink-0;
   }
-  as-button.secondary,
-  button.secondary {
+  as-button.secondary {
     @apply bg-secondary;
     @apply text-inherit;
     @apply text-secondary-foreground;
     @apply hover:bg-secondary/80;
   }
-  as-button.destructive,
-  button.destructive {
+  as-button.destructive {
     @apply bg-destructive;
     @apply text-inherit;
     @apply text-destructive-foreground;
     @apply hover:bg-destructive/90;
   }
-  as-button.outline,
-  button.outline {
+  as-button.outline {
     @apply border;
     @apply border-input;
     @apply bg-background;
@@ -200,23 +197,20 @@
     @apply hover:text-accent-foreground;
     @apply outline-none;
   }
-  as-button.ghost,
-  button.ghost {
+  as-button.ghost {
     @apply bg-transparent;
     @apply text-inherit;
     @apply hover:bg-accent;
     @apply hover:text-accent-foreground;
   }
-  as-button.link,
-  button.link {
+  as-button.link {
     @apply bg-transparent;
     @apply text-primary;
     @apply underline-offset-4;
     @apply hover:underline;
     @apply hover:bg-transparent;
   }
-  as-button.icon,
-  button.icon {
+  as-button.icon {
     @apply border;
     @apply border-input;
     @apply bg-background;

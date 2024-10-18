@@ -10,7 +10,7 @@ export default function ThemeToggle({ short = false }: { short?: boolean }) {
     <button
       onClick={() => setTheme(isDark ? "light" : "dark")}
       className={cn(
-        "p-0 text-2xl rounded-full text-white unapply-svg unapply-color h-auto flex justify-start border-2",
+        "text-2xl rounded-full text-white flex justify-start border-2",
         short ? "w-auto" : "w-[64px]",
       )}
     >
