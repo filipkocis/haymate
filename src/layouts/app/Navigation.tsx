@@ -4,6 +4,7 @@ import { cn } from "/src/lib/utils"
 import UnicornIcon from "/src/assets/svg/UnicornIcon"
 import useAnimation from "/src/hooks/useAnimation"
 import ThemeToggle from "/src/components/ThemeToggle"
+import useWindowSize from "/src/hooks/useWindowSize"
 
 const SIZE = 24
 const ROUTES = [
@@ -37,10 +38,16 @@ const ROUTES = [
 export default function Navigation({ open }: { open: boolean }) {
   const animation = useAnimation({ duration: 300, deps: [open] }) 
   const location = useLocation()
+  const windowSize = useWindowSize(100)
+
   const fullyOpen = animation.state !== "entered"
 
   return (
-    <div className="grid grid-rows-[1fr,auto]">
+    <div className={cn(
+      "grid grid-rows-[1fr,auto]",
+      "max-md:w-[220px] max-md:bg-background max-md:border-r max-md:rounded-none max-md:bottom-0 max-md:z-50 max-md:transition-all max-md:absolute max-md:left-0 max-md:top-[3rem] ",
+      fullyOpen ? "max-md:-translate-x-full" : "max-md:translate-x-0",
+    )}>
       <nav>
         <ul className="px-6 py-3 flex flex-col gap-3">
           {ROUTES.map((route) => (
