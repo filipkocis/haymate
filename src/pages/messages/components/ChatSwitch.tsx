@@ -10,7 +10,7 @@ export default function ChatSwitch({ selected, setSelected, variant }: { selecte
       } 
       onClick={() => setSelected(variant)}
     >
-      variant
+      {variant}
     </button>  
   )
 }
