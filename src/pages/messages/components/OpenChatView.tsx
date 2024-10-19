@@ -30,7 +30,7 @@ export default function OpenChatView({ className }: { className?: string }) {
     <div ref={chatRef} className={cn(
       "grid grid-rows-[auto,1fr,auto] gap-4 bg-background",
       "max-lg:absolute max-lg:h-full max-lg:w-full",
-      maxLg && "animate-slide-in-left",
+      maxLg ? "animate-slide-in-left" : "animate-fade-in-page",
       className
     )}>
       <div className="flex gap-4 p-3 items-center">
