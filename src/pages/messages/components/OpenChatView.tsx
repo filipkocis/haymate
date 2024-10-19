@@ -1,18 +1,22 @@
-import { LucideSend } from "lucide-react";
+import { LucideChevronLeft, LucideSend } from "lucide-react";
 import { cn } from "/src/lib/utils";
 import Button from "/src/components/Button";
 import Textarea from "/src/components/Textarea";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import NoChatSelected from "./NoChatSelected";
 
 export default function OpenChatView({ className }: { className?: string }) {
   const { userId: chatWith } = useParams();
+  const navigate = useNavigate();
 
   if (!chatWith) return <NoChatSelected />;
 
   return (
-    <div className={cn("max-lg:absolute grid grid-rows-[auto,1fr,auto] gap-4", className)}>
+    <div className={cn("animate-fade-in-page max-lg:absolute grid grid-rows-[auto,1fr,auto] gap-4", className)}>
       <div className="flex gap-4 p-3 items-center">
+        <button onClick={() => navigate('/messages')}>
+          <LucideChevronLeft size={24} className="hover:scale-125 transition-transform" />
+        </button>
         <div className="w-10 h-10 rounded-full overflow-hidden shadow-lg">
           <img src="https://randomuser.me/api/portraits/men/1.jpg" className="aspect-[1/1] h-full w-full object-cover object-center" />
         </div>
