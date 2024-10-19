@@ -55,7 +55,7 @@ export default function Navigation({ open }: { open: boolean }) {
                 className={cn(
                   "flex items-center hover:text-primary/80 transition-all px-2 py-1",
                   open && "text-primary",
-                  location.pathname === route.href && "text-primary hover:text-primary/80 font-bold scale-110",
+                  location.pathname.startsWith(route.href) && "text-primary hover:text-primary/80 font-bold scale-110",
                 )}
               >
                 <div className="w-max">
