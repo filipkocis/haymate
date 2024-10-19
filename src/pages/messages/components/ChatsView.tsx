@@ -5,11 +5,9 @@ import type { Selected } from "./ChatSwitch"
 import MessagesView from "./MessagesView"
 import RequestsView from "./RequestsView"
 import XView from "./XView"
-import { useParams } from "react-router-dom"
 
 export default function ChatsView({ className }: { className?: string }) {
   const [selected, setSelected] = useState<Selected>("messages")
-  const { userId: chatWith } = useParams();
 
   return (
     <div className={cn("flex flex-col gap-6 lg:w-[30vw]", className)}>
