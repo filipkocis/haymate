@@ -14,7 +14,7 @@ export default function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="match" element={<Match />} />
-            <Route path="messages" element={<Messages />} />
+            <Route path="messages/:userId" element={<Messages />} />
             <Route path="*" element={<NoPage />} />
           </Route>
         </Routes>

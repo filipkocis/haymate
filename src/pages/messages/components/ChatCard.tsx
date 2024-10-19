@@ -10,6 +10,7 @@ export default function ChatCard() {
           <p className="text-xs text-foreground/60">2h</p>
         </div>
         <p style={{ wordBreak: "break-word" }} className="text-foreground/60 text-ellipsis rounded-none line-clamp-2">
+          Hello, how are you?
         </p>
       </div>
     </div>
