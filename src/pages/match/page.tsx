@@ -28,7 +28,7 @@ export default function Match() {
   }, [switcheroo])
 
   return (
-    <div className="relative flex flex-col sm:grid grid-rows-[1fr,auto] justify-between sm:justify-center sm:px-6 pt-2 sm:pt-6 overflow-hidden">
+    <div className="animate-fade-in-page relative flex flex-col sm:grid grid-rows-[1fr,auto] justify-between sm:justify-center sm:px-6 pt-2 sm:pt-6 overflow-hidden">
       <MatchCard className={cn(
         "absolute opacity-0 scale-0 justify-self-center self-center top-2 sm:top-6 -z-10",
         !switcheroo && "visibility-none",

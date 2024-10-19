@@ -2,7 +2,7 @@ import Flushed from "/src/assets/flushed_nobg.png";
 
 export default function NoPage() {
   return (
-    <div className="flex gap-8 items-center justify-center flex-col grow">
+    <div className="animate-fade-in-page flex gap-8 items-center justify-center flex-col grow">
       <img 
         src={Flushed} 
         alt="Flushed emoji" 

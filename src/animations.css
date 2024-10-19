@@ -1,3 +1,16 @@
+.animate-fade-in-page {
+  animation: fade-in-page 300ms ease-out forwards;
+}
+
+@keyframes fade-in-page {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .animate-goofball {
   animation: goofball 4s linear infinite;
 }
