@@ -1,3 +1,33 @@
+.animate-slide-out-right {
+  animation: slide-out-right 150ms ease-out forwards;
+}
+
+@keyframes slide-out-right {
+ 0% {
+    opacity: 1;
+    transform: translateX(0);
+  } 
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 150ms ease-out forwards;
+}
+
+@keyframes slide-in-left {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .animate-fade-in-page {
   animation: fade-in-page 300ms ease-out forwards;
 }

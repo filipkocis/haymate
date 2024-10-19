@@ -4,17 +4,37 @@ import Button from "/src/components/Button";
 import Textarea from "/src/components/Textarea";
 import { useNavigate, useParams } from "react-router-dom";
 import NoChatSelected from "./NoChatSelected";
+import useWindowSize from "/src/hooks/useWindowSize";
+import { useRef } from "react";
 
 export default function OpenChatView({ className }: { className?: string }) {
+  const chatRef = useRef<HTMLDivElement>(null);
   const { userId: chatWith } = useParams();
   const navigate = useNavigate();
+  const { width: windowWidth } = useWindowSize();
+  const maxLg = windowWidth < 1024;
 
   if (!chatWith) return <NoChatSelected />;
 
+  function handleCloseChat() {
+    if (maxLg && chatRef.current) {
+      chatRef.current.classList.remove("animate-slide-in-left")
+      chatRef.current.classList.add("animate-slide-out-right")
+      setTimeout(() => navigate('/messages'), 150)
+    } else {
+      navigate('/messages')
+    }
+  }
+
   return (
-    <div className={cn("animate-fade-in-page max-lg:absolute grid grid-rows-[auto,1fr,auto] gap-4", className)}>
+    <div ref={chatRef} className={cn(
+      "grid grid-rows-[auto,1fr,auto] gap-4 bg-background",
+      "max-lg:absolute max-lg:h-full max-lg:w-full",
+      maxLg && "animate-slide-in-left",
+      className
+    )}>
       <div className="flex gap-4 p-3 items-center">
-        <button onClick={() => navigate('/messages')}>
+        <button onClick={handleCloseChat}>
           <LucideChevronLeft size={24} className="hover:scale-125 transition-transform" />
         </button>
         <div className="w-10 h-10 rounded-full overflow-hidden shadow-lg">
