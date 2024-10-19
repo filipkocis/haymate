@@ -2,7 +2,9 @@ import { useState } from "react"
 import { cn } from "/src/lib/utils"
 import ChatSwitch from "./ChatSwitch"
 import type { Selected } from "./ChatSwitch"
-import ChatCard from "./ChatCard"
+import MessagesView from "./MessagesView"
+import RequestsView from "./RequestsView"
+import XView from "./XView"
 
 export default function ChatsView({ className }: { className?: string }) {
   const [selected, setSelected] = useState<Selected>("messages")
@@ -25,16 +27,9 @@ export default function ChatsView({ className }: { className?: string }) {
         <ChatSwitch selected={selected} setSelected={setSelected} variant="x" />
       </div>
     
-      <div className="flex flex-col gap-3">
-        <ChatCard />
-        <ChatCard />
-        <ChatCard />
-        <ChatCard />
-        <ChatCard />
-        <ChatCard />
-        <ChatCard />
-        <ChatCard />
-      </div>
+      {selected === "messages" && <MessagesView />} 
+      {selected === "requests" && <RequestsView />} 
+      {selected === "x" && <XView />}
     </div>
   )
 }
