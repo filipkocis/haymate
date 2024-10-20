@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import NoChatSelected from "./NoChatSelected";
 import useWindowSize from "/src/hooks/useWindowSize";
 import { useRef } from "react";
+import MessageCard from "./MessageCard";
 
 export default function OpenChatView({ className }: { className?: string }) {
   const chatRef = useRef<HTMLDivElement>(null);
@@ -61,18 +62,6 @@ export default function OpenChatView({ className }: { className?: string }) {
           <LucideSend size={24} />
         </Button>
       </div> 
-    </div>
-  )
-}
-
-function MessageCard({ right = false }: { right?: boolean }) {
-  return (
-    <div className={cn(
-      "min-h-[1rem] items-center border px-3 py-2 rounded-full",
-      right ? "bg-primary text-primary-foreground" : "bg-foreground/10 text-foreground",
-      right ? "self-end" : "self-start"
-    )}>
-      <p className="">Hello, how are you?</p>
     </div>
   )
 }
