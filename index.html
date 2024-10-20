@@ -5,9 +5,25 @@
     <link rel="icon" type="image/icon" href="/hay.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Haymate | Horsin' Around</title>
+    
+    <style>
+      .animate-loader-spin {
+        animation: loader-spin 4s linear infinite;
+      }
+      @keyframes loader-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div style="gap: 1rem; display: flex; flex-direction: column; justify-content: center; align-items: center; position: absolute; inset: 0">
+        <img src="/hay.png" alt="Haymate Logo" class="animate-loader-spin" style="width: 130px; height; 130px;" />
+        <p style="font-family: 'Arial'; font-size: 1.4rem; font-weight: 500; padding: 0; margin: 0; line-height: 1.2;">Loading...</p>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
