@@ -34,6 +34,11 @@ const ROUTES = [
   }
 ]
 
+function isPathSelected(pathname: string, href: string) {
+  if (href === '/') return pathname === href
+  return pathname.startsWith(href)
+}
+
 export default function Navigation({ open }: { open: boolean }) {
   const animation = useAnimation({ duration: 300, deps: [open] }) 
   const location = useLocation()
@@ -55,7 +60,7 @@ export default function Navigation({ open }: { open: boolean }) {
                 className={cn(
                   "flex items-center hover:text-primary/80 transition-all px-2 py-1",
                   open && "text-primary",
-                  location.pathname.startsWith(route.href) && "text-primary hover:text-primary/80 font-bold scale-110",
+                  isPathSelected(location.pathname, route.href) && "text-primary hover:text-primary/80 font-bold scale-110",
                 )}
               >
                 <div className="w-max">
