@@ -6,9 +6,9 @@ export default function NoPage() {
       <img 
         src={Flushed} 
         alt="Flushed emoji" 
-        className="w-40 h-40 animate-goofball"
+        className="w-32 sm:w-40 h-32 sm:h-40 animate-goofball"
       />
-      <p className="text-4xl">404: Page Not Found</p>
+      <p className="text-2xl text-center sm:text-4xl">404: Page Not Found</p>
     </div>
   )
 }
