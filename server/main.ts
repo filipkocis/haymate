@@ -37,6 +37,24 @@ app.use((req, res, next) => {
   next()
 })
 
+app.get('/api/user', (req, res) => {
+  const id = req.query.id?.toString() 
+
+  if (!id) {
+    res.status(400).send()
+    return
+  }
+
+  const user = users.get(id)
+
+  if (!user) {
+    res.status(404).send()
+    return
+  }
+
+  res.status(200).send(user)
+})
+
 app.post('/api/send', (req, res) => {
   const userId = sessions.get(auth(req))?.userId
   if (!userId) {
