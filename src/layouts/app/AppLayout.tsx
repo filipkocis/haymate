@@ -1,7 +1,8 @@
 import { LucideMenu } from "lucide-react"
 import { useState } from "react"
 import Navigation from "./Navigation"
-import { cn } from "/src/lib/utils"
+import { cn } from "@/lib/utils"
+import UserMenu from "../components/UserMenu"
 
 export default function AppLayout() {
   const [open, setOpen] = useState(true)
@@ -15,6 +16,10 @@ export default function AppLayout() {
           </button>
           <h1 className="text-2xl font-extrabold">HAY</h1>
         </div>
+
+        <div></div>
+
+        <UserMenu />
       </div>
       <Navigation open={open}/>
     </>
