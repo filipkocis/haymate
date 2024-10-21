@@ -7,15 +7,17 @@ import NoChatSelected from "./NoChatSelected";
 import useWindowSize from "@/hooks/useWindowSize";
 import { useEffect, useRef, useState } from "react";
 import MessageCard from "./MessageCard";
-import { Message } from "../types";
+import { Message, User } from "../types";
 import { useSession } from "@/context/SessionProvider";
+import Avatar from "@/components/Avatar";
 
 export default function OpenChatView({ className }: { className?: string }) {
   const [messages, setMessages] = useState<Message[]>([])
   const chatRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
-  const { userId: chatWith } = useParams();
+  const { userId: chatWithId } = useParams();
+  const [chatWith, setChatWith] = useState<User>();
   const { session } = useSession();
   const navigate = useNavigate();
   const { width: windowWidth } = useWindowSize();
@@ -28,22 +30,27 @@ export default function OpenChatView({ className }: { className?: string }) {
   }, [messagesRef, messages])
 
   useEffect(() => {
-    if (!chatWith) return setMessages([]);
+    if (!chatWithId) return setMessages([]);
 
     async function load() {
       try {
-        const res = await fetch(`${import.meta.env.VITE_HOST}/api/messages?userId=${chatWith}`)
-        if (!res.ok) return
-        const data = await res.json()
-        setMessages(data.reverse())
+        const resUser = await fetch(`${import.meta.env.VITE_HOST}/api/user?id=${chatWithId}`)
+        if (!resUser.ok) return
+        const user = await resUser.json()
+        setChatWith(user)
+
+        const resMsgs = await fetch(`${import.meta.env.VITE_HOST}/api/messages?userId=${chatWithId}`)
+        if (!resMsgs.ok) return
+        const msgs = await resMsgs.json()
+        setMessages(msgs.reverse())
       } catch (error) {
         console.error(error)
       }
     }
     load()
-  }, [chatWith])
+  }, [chatWithId])
 
-  if (!chatWith) return <NoChatSelected />;
+  if (!chatWithId) return <NoChatSelected />;
 
   async function handleSend() {
     if (!inputRef.current) return;
@@ -63,7 +70,7 @@ export default function OpenChatView({ className }: { className?: string }) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          userId: chatWith,
+          userId: chatWithId,
           text: message
         })
       })
@@ -101,10 +108,8 @@ export default function OpenChatView({ className }: { className?: string }) {
         <button onClick={handleCloseChat}>
           <LucideChevronLeft size={24} className="hover:scale-125 transition-transform" />
         </button>
-        <div className="w-10 h-10 rounded-full overflow-hidden shadow-lg">
-          <img src="https://randomuser.me/api/portraits/men/1.jpg" className="aspect-[1/1] h-full w-full object-cover object-center" />
-        </div>
-        <p className="font-semibold">{chatWith}</p>
+        <Avatar src={chatWith?.avatar} alt={chatWith?.name} size={40} />
+        <p className="font-semibold">{chatWith?.name}</p>
       </div> 
 
       <div ref={messagesRef} className="grid overflow-auto overflow-x-hidden rounded-none px-2">
