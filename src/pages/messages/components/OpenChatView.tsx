@@ -14,11 +14,18 @@ export default function OpenChatView({ className }: { className?: string }) {
   const [messages, setMessages] = useState<Message[]>([])
   const chatRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const messagesRef = useRef<HTMLDivElement>(null);
   const { userId: chatWith } = useParams();
   const { session } = useSession();
   const navigate = useNavigate();
   const { width: windowWidth } = useWindowSize();
   const maxLg = windowWidth < 1024;
+
+  useEffect(() => {
+    if (messagesRef.current) {
+      messagesRef.current.scrollTop = messagesRef.current.scrollHeight
+    }
+  }, [messagesRef, messages])
 
   useEffect(() => {
     if (!chatWith) return setMessages([]);
@@ -100,7 +107,7 @@ export default function OpenChatView({ className }: { className?: string }) {
         <p className="font-semibold">{chatWith}</p>
       </div> 
 
-      <div className="grid overflow-auto overflow-x-hidden rounded-none px-2">
+      <div ref={messagesRef} className="grid overflow-auto overflow-x-hidden rounded-none px-2">
         <div className="flex flex-col-reverse gap-2">
           {messages.map(message => (
             <MessageCard
