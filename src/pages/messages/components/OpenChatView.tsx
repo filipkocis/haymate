@@ -1,19 +1,40 @@
 import { LucideChevronLeft, LucideSend } from "lucide-react";
-import { cn } from "/src/lib/utils";
-import Button from "/src/components/Button";
-import Textarea from "/src/components/Textarea";
+import { cn } from "@/lib/utils";
+import Button from "@/components/Button";
+import Textarea from "@/components/Textarea";
 import { useNavigate, useParams } from "react-router-dom";
 import NoChatSelected from "./NoChatSelected";
-import useWindowSize from "/src/hooks/useWindowSize";
-import { useRef } from "react";
+import useWindowSize from "@/hooks/useWindowSize";
+import { useEffect, useRef, useState } from "react";
 import MessageCard from "./MessageCard";
+import { Message } from "../types";
+import { useSession } from "@/context/SessionProvider";
 
 export default function OpenChatView({ className }: { className?: string }) {
+  const [messages, setMessages] = useState<Message[]>([])
   const chatRef = useRef<HTMLDivElement>(null);
   const { userId: chatWith } = useParams();
+  const { session } = useSession();
   const navigate = useNavigate();
   const { width: windowWidth } = useWindowSize();
   const maxLg = windowWidth < 1024;
+
+  useEffect(() => {
+    if (!chatWith) return;
+
+    async function load() {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_HOST}/api/messages?userId=${chatWith}`)
+        if (!res.ok) return
+        const data = await res.json()
+        setMessages(data)
+        console.log(data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    load()
+  }, [chatWith])
 
   if (!chatWith) return <NoChatSelected />;
 
@@ -46,13 +67,13 @@ export default function OpenChatView({ className }: { className?: string }) {
 
       <div className="grid overflow-auto overflow-x-hidden rounded-none px-2">
         <div className="flex flex-col-reverse gap-2">
-          <MessageCard />
-          <MessageCard />
-          <MessageCard right />
-          <MessageCard />
-          <MessageCard right />
-          <MessageCard right />
-          <MessageCard />
+          {messages.map(message => (
+            <MessageCard
+              key={message.id}
+              message={message}
+              right={message.author === session}
+            />
+          ))}
         </div> 
       </div>
 
