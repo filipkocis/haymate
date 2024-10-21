@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { cn } from "/src/lib/utils"
+import { cn } from "@/lib/utils"
 import ChatSwitch from "./ChatSwitch"
 import type { Selected } from "./ChatSwitch"
 import MessagesView from "./MessagesView"

@@ -1,6 +1,6 @@
 import { LucideMoon, LucideSun } from "lucide-react"
-import { cn } from "../lib/utils"
-import { useTheme } from "/src/context/ThemeProvider"
+import { cn } from "@/lib/utils"
+import { useTheme } from "@/context/ThemeProvider"
 
 export default function ThemeToggle({ short = false }: { short?: boolean }) {
   const { theme, setTheme } = useTheme()
