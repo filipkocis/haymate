@@ -57,6 +57,16 @@ app.post('/api/send', (req, res) => {
     return
   }
 
+  if (userId === userIdB) {
+    res.status(400).send()
+    return
+  }
+
+  if (text.length > 1000 || text.trim().length === 1) {
+    res.status(400).send()
+    return
+  }
+
   const id = chats.id(userId, userIdB)
   const message: Message = {
     id: Math.random().toString(36).substring(2, 15),
@@ -138,7 +148,7 @@ app.post('/api/auth/logout', (req, res) => {
 app.get('/api/auth/session', (req, res) => {
   const session = sessions.get(auth(req))
   if (session) {
-    res.status(200).send({ userId: session})
+    res.status(200).send({ userId: session.id})
     return
   } else {
     if (auth(req)) {
