@@ -199,5 +199,5 @@ app.get(/^(?!\/api).*/, (_req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Deno server listening on port ${port}`)
 })
