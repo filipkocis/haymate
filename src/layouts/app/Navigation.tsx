@@ -1,9 +1,10 @@
 import { LucideAtom, LucideCog, LucideHeart, LucideMessageCircle } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
-import { cn } from "/src/lib/utils"
-import UnicornIcon from "/src/assets/svg/UnicornIcon"
-import useAnimation from "/src/hooks/useAnimation"
-import ThemeToggle from "/src/components/ThemeToggle"
+import { cn } from "@/lib/utils"
+import UnicornIcon from "@/assets/svg/UnicornIcon"
+import useAnimation from "@/hooks/useAnimation"
+import ThemeToggle from "@/components/ThemeToggle"
+import LogOut from "@/components/LogOut"
 
 const SIZE = 24
 const ROUTES = [
@@ -48,7 +49,7 @@ export default function Navigation({ open }: { open: boolean }) {
   return (
     <div className={cn(
       "grid grid-rows-[1fr,auto]",
-      "max-md:w-[220px] max-md:bg-background max-md:border-r max-md:rounded-none max-md:bottom-0 max-md:z-50 max-md:transition-transform max-md:absolute max-md:left-0 max-md:top-[3rem] ",
+      "max-md:w-[220px] max-md:bg-background max-md:border-r max-md:rounded-none max-md:bottom-0 max-md:z-50 max-md:transition-transform max-md:absolute max-md:left-0 max-md:top-[56px] ",
       fullyOpen ? "max-md:-translate-x-full" : "max-md:translate-x-0",
     )}>
       <nav>
@@ -86,6 +87,7 @@ export default function Navigation({ open }: { open: boolean }) {
         "flex justify-center gap-2 px-4 py-2 flex-col",
         fullyOpen ? "items-center" : "items-start"
       )}>
+        <LogOut />
         <ThemeToggle short={fullyOpen} />
         <p className={cn("text-sm text-foreground/80", fullyOpen && "w-0 overflow-hidden whitespace-nowrap")}>© 2024 Filip LLC</p>
       </footer>
