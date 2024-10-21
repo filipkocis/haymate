@@ -13,6 +13,7 @@ import { useSession } from "@/context/SessionProvider";
 export default function OpenChatView({ className }: { className?: string }) {
   const [messages, setMessages] = useState<Message[]>([])
   const chatRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const { userId: chatWith } = useParams();
   const { session } = useSession();
   const navigate = useNavigate();
@@ -20,15 +21,14 @@ export default function OpenChatView({ className }: { className?: string }) {
   const maxLg = windowWidth < 1024;
 
   useEffect(() => {
-    if (!chatWith) return;
+    if (!chatWith) return setMessages([]);
 
     async function load() {
       try {
         const res = await fetch(`${import.meta.env.VITE_HOST}/api/messages?userId=${chatWith}`)
         if (!res.ok) return
         const data = await res.json()
-        setMessages(data)
-        console.log(data)
+        setMessages(data.reverse())
       } catch (error) {
         console.error(error)
       }
@@ -37,6 +37,41 @@ export default function OpenChatView({ className }: { className?: string }) {
   }, [chatWith])
 
   if (!chatWith) return <NoChatSelected />;
+
+  async function handleSend() {
+    if (!inputRef.current) return;
+
+    const message = inputRef.current.value.trim();
+    if (!message) return;
+    if (message.length > 500) return;
+
+    inputRef.current.value = "";
+    const event = new Event('input', { bubbles: true })
+    inputRef.current.dispatchEvent(event)
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_HOST}/api/send`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          userId: chatWith,
+          text: message
+        })
+      })
+
+      if (!res.ok) {
+        console.error("Failed to send message")
+        return
+      }
+
+      const data = await res.json()
+      setMessages([data, ...messages])
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   function handleCloseChat() {
     if (maxLg && chatRef.current) {
@@ -78,8 +113,8 @@ export default function OpenChatView({ className }: { className?: string }) {
       </div>
 
       <div className="grid grid-cols-[1fr,auto] gap-4">
-        <Textarea className="" placeholder="Type a message" /> 
-        <Button>
+        <Textarea ref={inputRef} className="" placeholder="Type a message" /> 
+        <Button onClick={handleSend}>
           <LucideSend size={24} />
         </Button>
       </div> 
