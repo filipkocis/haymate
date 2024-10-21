@@ -12,3 +12,15 @@ export function debounce(fn: (...args: any[]) => any, delay: number) {
     timeoutId = setTimeout(() => fn(...args), delay);
   };
 }
+
+const formatter = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "short",
+  timeStyle: "short"
+})
+
+export function formatTime(time?: number) {
+  if (!time) return ''
+
+  const date = new Date(time)
+  return formatter.format(date) 
+}
