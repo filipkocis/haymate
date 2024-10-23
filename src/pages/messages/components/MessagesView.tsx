@@ -1,30 +1,11 @@
-import { useParams } from "react-router-dom";
 import ChatCard from "./ChatCard";
 import ChatCardsWrapper from "./ChatCardsWrapper";
-import { useEffect, useState } from "react";
 import { Chat } from "../types";
 
-export default function MessagesView() {
-  const { userId: chatWith } = useParams();
-  const [chats, setChats] = useState<Chat[]>([])
-
-  useEffect(() => {
-    async function load() {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_HOST}/api/chats`)
-        if (!res.ok) return
-        const data = await res.json()
-        setChats(data)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-    load()
-  }, [])
-
+export default function MessagesView({ chats, chatWith }: { chats: Chat[], chatWith: string | undefined }) {
   return (
     <ChatCardsWrapper>
-      {chats.map(chat => (
+      {chats.filter(chat => !!chat.lastMessage).map(chat => (
         <ChatCard 
           key={chat.id} 
           user={chat.user} 

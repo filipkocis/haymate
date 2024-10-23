@@ -1,13 +1,31 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import ChatSwitch from "./ChatSwitch"
 import type { Selected } from "./ChatSwitch"
 import MessagesView from "./MessagesView"
 import RequestsView from "./RequestsView"
 import MatchesView from "./MatchesView"
+import { useParams } from "react-router-dom"
+import { Chat } from "../types"
 
 export default function ChatsView({ className }: { className?: string }) {
+  const { userId: chatWith } = useParams();
+  const [chats, setChats] = useState<Chat[]>([])
   const [selected, setSelected] = useState<Selected>("messages")
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_HOST}/api/chats`)
+        if (!res.ok) return
+        const data = await res.json()
+        setChats(data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    load()
+  }, [])
 
   return (
     <div className={cn("flex flex-col gap-6 lg:w-[30vw]", className)}>
@@ -27,8 +45,8 @@ export default function ChatsView({ className }: { className?: string }) {
         <ChatSwitch selected={selected} setSelected={setSelected} variant="requests" />
       </div>
     
-      {selected === "messages" && <MessagesView />} 
-      {selected === "matches" && <MatchesView />}
+      {selected === "messages" && <MessagesView chats={chats} chatWith={chatWith} />} 
+      {selected === "matches" && <MatchesView chats={chats} chatWith={chatWith} />}
       {selected === "requests" && <RequestsView />} 
     </div>
   )
