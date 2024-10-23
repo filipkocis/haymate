@@ -1,3 +1,5 @@
+import { generateMessage } from "./gen/message-gen.ts";
+import type { Profile } from "./profiles.ts";
 import Store from "./store.ts";
 
 type ChatID = string
@@ -58,8 +60,11 @@ export default class ChatStore extends Store<ChatID, MessageStore> {
       })
   }
 
-  generateMessage(chatId: ChatID, author: string) {
-    const message = ChatStore.message('Hello!', author)
+  async generateMessage(chatId: ChatID, profile: Profile) {
+    const generated = await generateMessage(chatId, profile, this)
+    if (!generated) return undefined
+
+    const message = ChatStore.message(generated, profile.id)
     this.addMessage(chatId, message)
     return message
   }

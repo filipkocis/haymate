@@ -74,7 +74,7 @@ app.get('/api/search', (req, res) => {
 })
 
 const btoi = (b: boolean) => b ? 1 : 0
-app.get('/api/match', (req, res) => {
+app.get('/api/match', async (req, res) => {
   const userId = sessions.get(auth(req))?.userId
   if (!userId) {
     res.status(401).send()
@@ -101,10 +101,14 @@ app.get('/api/match', (req, res) => {
     if (didLove) {
       previous.stats.loves++
 
-      chats.generateMessage(chatId, previous.id)
+      // 75% chance to get a reply with a love
+      if (Math.random() > 0.25) {
+        await chats.generateMessage(chatId, previous)
+      }
     } else {
-      if (Math.random() > 0.5) {
-        chats.generateMessage(chatId, previous.id)
+      // 25% chance to get a reply with a like
+      if (Math.random() > 0.75) {
+        await chats.generateMessage(chatId, previous)
       }
     }
 
@@ -150,7 +154,7 @@ app.get('/api/user', (req, res) => {
   res.status(200).send(user)
 })
 
-app.post('/api/send', (req, res) => {
+app.post('/api/send', async (req, res) => {
   const userId = sessions.get(auth(req))?.userId
   if (!userId) {
     res.status(401).send()
@@ -165,7 +169,8 @@ app.post('/api/send', (req, res) => {
     return
   }
 
-  if (!profiles.get(userIdB)) {
+  const profileB = profiles.get(userIdB)
+  if (!profileB) {
     res.status(404).send()
     return
   }
@@ -184,8 +189,8 @@ app.post('/api/send', (req, res) => {
   const message = ChatStore.message(text, userId)
   
   chats.addMessage(id, message)
-  const reply = Math.random() > 0.5 ? chats.generateMessage(id, userIdB) : undefined
 
+  const reply = await chats.generateMessage(id, profileB)
   res.status(200).send({ sent: message, reply })
 })
 
