@@ -3,7 +3,7 @@ import { LucideInfo } from "lucide-react"
 
 export default function Settings() {
   return (
-    <div className="animate-fade-in-page p-2">
+    <div className="animate-fade-in-page p-2 overflow-auto">
       <div className="flex flex-col gap-8 max-w-lg mx-auto">
         <div className="items-center flex flex-col gap-3">
           <div className="flex gap-2 border px-3 py-2 items-center text-red-500 border-red-500">
