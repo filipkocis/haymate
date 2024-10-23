@@ -1,7 +1,7 @@
 import Store from "./store.ts";
 
 type SessionID = string
-type Session = {
+export type Session = {
   id: SessionID
   userId: string
 }

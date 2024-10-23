@@ -57,4 +57,18 @@ export default class ChatStore extends Store<ChatID, MessageStore> {
         return idA === userId || idB === userId
       })
   }
+
+  generateMessage(chatId: ChatID, author: string) {
+    const message = ChatStore.message('Hello!', author)
+    this.addMessage(chatId, message)
+  }
+
+  static message(text: string, author: string, timestamp = Date.now()): Message {
+    return {
+      id: Math.random().toString(36).substring(2, 15),
+      text,
+      timestamp,
+      author,
+    }
+  }
 }

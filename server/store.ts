@@ -3,6 +3,10 @@ export default class Store<K, V> {
 
   constructor() {}
 
+  length(): number {
+    return this.#data.size;
+  }
+
   get(key: K): V | undefined {
     return this.#data.get(key);
   }
