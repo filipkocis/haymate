@@ -5,16 +5,17 @@ import * as path from "jsr:@std/path";
 import { auth, generateSession } from "./utils.ts";
 import SessionStore from "./sessions.ts";
 import ChatStore, { type Message } from "./messages.ts";
-import UserStore from "./users.ts";
+import ProfileStore from "./profiles.ts";
 
 const sessions = new SessionStore()
 const chats = new ChatStore()
-const users = new UserStore()
-users.mock()
+const profiles = new ProfileStore()
+profiles.load()
 
 const app = express()
 const port = Deno.env.get("PORT") || 3000
 
+app.use(express.static(path.join(Deno.cwd(), "./images")));
 app.use(express.static(path.join(Deno.cwd(), "./dist")));
 app.use(express.json())
 app.use(cookieParser())
@@ -37,6 +38,16 @@ app.use((req, res, next) => {
   next()
 })
 
+app.get('/api/match', (req, res) => {
+  const profile = profiles.getAny()
+  if (!profile) {
+    res.status(404).send()
+    return
+  }
+
+  res.status(200).send({ next: profile })
+})
+
 app.get('/api/user', (req, res) => {
   const id = req.query.id?.toString() 
 
@@ -45,7 +56,7 @@ app.get('/api/user', (req, res) => {
     return
   }
 
-  const user = users.get(id)
+  const user = profiles.getUser(id)
 
   if (!user) {
     res.status(404).send()
@@ -70,7 +81,7 @@ app.post('/api/send', (req, res) => {
     return
   }
 
-  if (!users.get(userIdB)) {
+  if (!profiles.get(userIdB)) {
     res.status(404).send()
     return
   }
@@ -116,7 +127,7 @@ app.get('/api/messages', (req, res) => {
     return
   }
 
-  if (!users.get(userIdB)) {
+  if (!profiles.get(userIdB)) {
     res.status(404).send()
     return
   }
@@ -138,7 +149,7 @@ app.get('/api/chats', (req, res) => {
   const mappedChats = userChats.map(chatId => {
     const [userA, userB] = chatId.split(':')
     const otherUserId = userA === userId ? userB : userA
-    const otherUser = users.get(otherUserId)
+    const otherUser = profiles.getUser(otherUserId)
     return {
       id: chatId,
       user: otherUser,
@@ -200,17 +211,21 @@ app.post('/api/auth/guest', (req, res) => {
   }
 
   let i = 0;
-  for (const user of users.values()) {
-    chats.getMessages(chats.id(user.id, session))
+  for (const profile of profiles.values()) {
+    chats.getMessages(chats.id(profile.id, session))
 
     if (i % 2 === 0) {
       const message: Message = {
         id: Math.random().toString(36).substring(2, 15),
         text: "Hello!",
         timestamp: Date.now(),
-        author: user.id
+        author: profile.id
       }
-      chats.addMessage(chats.id(user.id, session), message)
+      chats.addMessage(chats.id(profile.id, session), message)
+    }
+
+    if (i > 10) {
+      break
     }
 
     i++
