@@ -239,7 +239,7 @@ app.get('/api/chats', (req, res) => {
     return {
       id: chatId,
       user: otherUser,
-      lastMessage: chats.getMessages(chatId, 0, 1).at(0)
+      lastMessage: chats.getLatestMessage(chatId)
     }
   })
 

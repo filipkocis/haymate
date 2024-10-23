@@ -27,6 +27,12 @@ export default class ChatStore extends Store<ChatID, MessageStore> {
     return chat
   }
 
+  getLatestMessage(chatId: ChatID): Message | udnefined {
+    const chat = this.get(chatId)
+    const messages = chat.values().toArray().toSorted((a, b) => a.timestamp - b.timestamp)
+    return messages[messages.length - 1]
+  }
+
   getMessages(chatId: ChatID, cursor = 0, limit = 50): Message[] {
     const chat = this.get(chatId)
     const messages = chat.values().toArray().toSorted((a, b) => a.timestamp - b.timestamp)
