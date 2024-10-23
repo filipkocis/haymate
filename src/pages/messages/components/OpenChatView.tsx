@@ -81,7 +81,9 @@ export default function OpenChatView({ className }: { className?: string }) {
       }
 
       const data = await res.json()
-      setMessages([data, ...messages])
+      const { sent, reply } = data
+      const newMessages = !!reply ? [reply, sent] : [sent]
+      setMessages([...newMessages, ...messages])
     } catch (error) {
       console.error(error)
     }
