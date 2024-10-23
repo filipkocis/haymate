@@ -1,6 +1,6 @@
-import { cn } from "/src/lib/utils"
+import { cn } from "@/lib/utils"
 
-export type Selected = 'messages' | 'requests' | 'x'
+export type Selected = 'messages' | 'requests' | 'matches'
 export default function ChatSwitch({ selected, setSelected, variant }: { selected: Selected, setSelected: (selected: Selected) => void, variant: Selected }) {
   return (
     <button 

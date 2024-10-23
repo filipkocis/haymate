@@ -4,7 +4,7 @@ import ChatSwitch from "./ChatSwitch"
 import type { Selected } from "./ChatSwitch"
 import MessagesView from "./MessagesView"
 import RequestsView from "./RequestsView"
-import XView from "./XView"
+import MatchesView from "./MatchesView"
 
 export default function ChatsView({ className }: { className?: string }) {
   const [selected, setSelected] = useState<Selected>("messages")
@@ -17,19 +17,19 @@ export default function ChatsView({ className }: { className?: string }) {
             "-z-10 transition-all duration-500 absolute h-full rounded-md bg-primary",
             "w-[calc((100%-2rem)/3)] min-w-[110px]",
             selected === "messages" && "left-0",
-            selected === "requests" && "left-[calc((100%-2rem)/3+1rem)]",
-            selected === "x" && "left-[calc(2*(100%-2rem)/3+2rem)]",
+            selected === "matches" && "left-[calc((100%-2rem)/3+1rem)]",
+            selected === "requests" && "left-[calc(2*(100%-2rem)/3+2rem)]",
           )}
         ></div>
 
         <ChatSwitch selected={selected} setSelected={setSelected} variant="messages" />
+        <ChatSwitch selected={selected} setSelected={setSelected} variant="matches" />
         <ChatSwitch selected={selected} setSelected={setSelected} variant="requests" />
-        <ChatSwitch selected={selected} setSelected={setSelected} variant="x" />
       </div>
     
       {selected === "messages" && <MessagesView />} 
+      {selected === "matches" && <MatchesView />}
       {selected === "requests" && <RequestsView />} 
-      {selected === "x" && <XView />}
     </div>
   )
 }
