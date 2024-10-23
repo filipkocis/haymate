@@ -160,7 +160,9 @@ app.post('/api/send', (req, res) => {
   const message = ChatStore.message(text, userId)
   
   chats.addMessage(id, message)
-  res.status(200).send(message)
+  const reply = Math.random() > 0.5 ? chats.generateMessage(id, userIdB) : undefined
+
+  res.status(200).send({ sent: message, reply })
 })
 
 app.get('/api/messages', (req, res) => {

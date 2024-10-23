@@ -61,6 +61,7 @@ export default class ChatStore extends Store<ChatID, MessageStore> {
   generateMessage(chatId: ChatID, author: string) {
     const message = ChatStore.message('Hello!', author)
     this.addMessage(chatId, message)
+    return message
   }
 
   static message(text: string, author: string, timestamp = Date.now()): Message {
