@@ -2,13 +2,13 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Layout from './layouts/app/Layout'
 import NoPage from './pages/NoPage'
 import Login from './pages/login/page'
-import Home from './pages/home/page'
 import Match from './pages/match/page'
 import Messages from './pages/messages/page'
 import ThemeProvider from './context/ThemeProvider'
 import SessionProvider from './context/SessionProvider'
 import Settings from './pages/settings/page'
 import Explore from './pages/explore/page'
+import Profile from './pages/profile/page'
 
 export default function App() {
   return (
@@ -23,6 +23,8 @@ export default function App() {
               <Route path="messages" element={<Messages />} />
               <Route path="messages/:userId" element={<Messages />} />
               <Route path="settings" element={<Settings />} />
+              <Route path="profile" element={<Explore />} />
+              <Route path="profile/:userId" element={<Profile />} />
               <Route path="*" element={<NoPage />} />
             </Route>
           </Routes>
