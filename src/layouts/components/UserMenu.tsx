@@ -8,8 +8,8 @@ export default function UserMenu() {
 
   return (
     <div className="flex gap-3 items-center">
-      <p>Hi, John Doe!</p>
-      <Avatar size={40} src="https://randomuser.me/api/portraits/men/1.jpg" />
+      <p>Hi, Guest!</p>
+      <Avatar size={40} src="/SxAMojJiDmojqhTfUGxO4.png" />
     </div>
   )
 }
