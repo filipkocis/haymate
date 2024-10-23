@@ -130,20 +130,22 @@ app.get('/api/match', (req, res) => {
   res.status(200).send({ previous, current })
 })
 
+app.get('/api/profile', (req, res) => {
+  const id = req.query.id?.toString() 
+  if (!id) { res.status(400).send(); return; }
+
+  const profile = profiles.get(id)
+  if (!profile) { res.status(404).send(); return; }
+
+  res.status(200).send(profile)
+})
+
 app.get('/api/user', (req, res) => {
   const id = req.query.id?.toString() 
-
-  if (!id) {
-    res.status(400).send()
-    return
-  }
+  if (!id) { res.status(400).send(); return; }
 
   const user = profiles.getUser(id)
-
-  if (!user) {
-    res.status(404).send()
-    return
-  }
+  if (!user) { res.status(404).send(); return; }
 
   res.status(200).send(user)
 })
