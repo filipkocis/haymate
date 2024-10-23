@@ -6,7 +6,7 @@ import { Profile } from "./types";
 import Loader from "@/components/Loader";
 
 export default function Match() {
-  const [switcheroo, setSwitcheroo] = useState(true)
+  const [switcheroo, setSwitcheroo] = useState(false)
   const [current, setCurrent] = useState<Profile>()
   const [next, setNext] = useState<Profile>()
 
@@ -19,15 +19,12 @@ export default function Match() {
 
     async function load() {
       try {
-        const res1 = await fetch("/api/match", { signal: controller.signal })
-        if (!res1.ok) return
-        const res2 = await fetch("/api/match", { signal: controller.signal })
-        if (!res2.ok) return
-        const data1 = await res1.json()
-        const data2 = await res2.json()
+        const res = await fetch("/api/match", { signal: controller.signal })
+        if (!res.ok) return
+        const data = await res.json()
 
-        setCurrent(data1.next)
-        setNext(data2.next)
+        setCurrent(data.previous)
+        setNext(data.current)
       } catch (error) {
         console.error(error)
       }
@@ -45,7 +42,7 @@ export default function Match() {
 
     async function load() {
       try {
-        const res = await fetch("/api/match", { signal: controller.signal })
+        const res = await fetch("/api/match?next=true", { signal: controller.signal })
         if (!res.ok) return
         const data = await res.json()
 
