@@ -4,7 +4,7 @@ import cookieParser from "npm:cookie-parser"
 import * as path from "jsr:@std/path";
 import { auth, generateSession } from "./utils.ts";
 import SessionStore, { type Session } from "./sessions.ts";
-import ChatStore, { type Message } from "./messages.ts";
+import ChatStore from "./messages.ts";
 import ProfileStore from "./profiles.ts";
 import MatchStore from "./matches.ts";
 
@@ -262,27 +262,6 @@ app.post('/api/auth/guest', (req, res) => {
       console.log("Failed to generate session")
       return
     }
-  }
-
-  let i = 0;
-  for (const profile of profiles.values()) {
-    chats.getMessages(chats.id(profile.id, session))
-
-    if (i % 2 === 0) {
-      const message: Message = {
-        id: Math.random().toString(36).substring(2, 15),
-        text: "Hello!",
-        timestamp: Date.now(),
-        author: profile.id
-      }
-      chats.addMessage(chats.id(profile.id, session), message)
-    }
-
-    if (i > 10) {
-      break
-    }
-
-    i++
   }
 
   sessions.set(session, { id: session, userId: session })
