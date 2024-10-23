@@ -2,7 +2,7 @@ import { LucideChevronLeft, LucideSend } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Button from "@/components/Button";
 import Textarea from "@/components/Textarea";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import NoChatSelected from "./NoChatSelected";
 import useWindowSize from "@/hooks/useWindowSize";
 import { useEffect, useRef, useState } from "react";
@@ -113,8 +113,12 @@ export default function OpenChatView({ className }: { className?: string }) {
         <button onClick={handleCloseChat}>
           <LucideChevronLeft size={24} className="hover:scale-125 transition-transform" />
         </button>
-        <Avatar src={chatWith?.avatar} alt={chatWith?.name} size={40} />
-        <p className="font-semibold">{chatWith?.name}</p>
+        <Link to={`/profile/${chatWithId}`}>
+          <Avatar src={chatWith?.avatar} alt={chatWith?.name} size={40} />
+        </Link>
+        <Link to={`/profile/${chatWithId}`}>
+          <p className="font-semibold hover:underline">{chatWith?.name}</p>
+        </Link>
       </div> 
 
       <div ref={messagesRef} className="grid overflow-auto overflow-x-hidden rounded-none px-2">
