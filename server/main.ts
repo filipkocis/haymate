@@ -5,7 +5,7 @@ import * as path from "jsr:@std/path";
 import { auth, generateSession } from "./utils.ts";
 import SessionStore, { type Session } from "./sessions.ts";
 import ChatStore from "./messages.ts";
-import ProfileStore from "./profiles.ts";
+import ProfileStore, { type User } from "./profiles.ts";
 import MatchStore from "./matches.ts";
 
 const sessions = new SessionStore()
@@ -49,6 +49,28 @@ app.use((req, res, next) => {
   }
 
   next()
+})
+
+app.get('/api/search', (req, res) => {
+  const query = req.query.q?.toString().toLowerCase() 
+
+  if (!query) {
+    res.status(400).send()
+    return
+  }
+
+  const results: User[] = []
+  for (const profile of profiles.values()) {
+    if (profile.name.toLowerCase().includes(query)) {
+      results.push({ 
+        id: profile.id,
+        name: profile.name,
+        avatar: profile.avatar
+      })
+    }
+  }
+
+  res.status(200).send({ results: results.slice(0, 15) })
 })
 
 const btoi = (b: boolean) => b ? 1 : 0
