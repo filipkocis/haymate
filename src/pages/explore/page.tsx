@@ -2,6 +2,7 @@ import Flushed from "@/assets/flushed_nobg.png";
 import { useEffect, useState } from "react";
 import { User } from "../messages/types";
 import Loader from "@/components/Loader";
+import { Link } from "react-router-dom";
 
 export default function Explore() {
   const [search, setSearch] = useState<string>("");
@@ -73,8 +74,8 @@ export default function Explore() {
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-8 p-2">
               {results.map(user => (
-                <div key={user.id} className="relative flex rounded-lg">
-                  <div className="before:shadow-[0_0_0.8rem_0.15rem_hsl(var(--foreground)/0.2)] before:rounded-xl before:bg-gradient-to-t before:from-black/30 before:via-transparent before:to-transparent before:absolute before:top-0 before:left-0 before:right-0 before:bottom-0">
+                <Link to={`/profile/${user.id}`} key={user.id} className="relative flex rounded-lg">
+                  <div className="before:shadow-[0_0_0.6rem_0.1rem_hsl(var(--foreground)/0.2)] before:rounded-xl before:bg-gradient-to-t before:from-black/30 before:via-transparent before:to-transparent before:absolute before:top-0 before:left-0 before:right-0 before:bottom-0">
                     <img 
                       src={user.avatar}
                       alt={user.name}
@@ -90,7 +91,7 @@ export default function Explore() {
                   >
                     {user.name}
                   </p>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
