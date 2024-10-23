@@ -15,7 +15,7 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>
-              <Route index element={<Home />} />
+              <Route index element={<NoPage />} />
               <Route path="login" element={<Login />} />
               <Route path="match" element={<Match />} />
               <Route path="messages" element={<Messages />} />
