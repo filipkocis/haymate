@@ -3,14 +3,16 @@ import express from "npm:express"
 import cookieParser from "npm:cookie-parser"
 import * as path from "jsr:@std/path";
 import { auth, generateSession } from "./utils.ts";
-import SessionStore from "./sessions.ts";
+import SessionStore, { type Session } from "./sessions.ts";
 import ChatStore, { type Message } from "./messages.ts";
 import ProfileStore from "./profiles.ts";
+import MatchStore from "./matches.ts";
 
 const sessions = new SessionStore()
 const chats = new ChatStore()
 const profiles = new ProfileStore()
 profiles.load()
+const matches = new MatchStore(profiles)
 
 const app = express()
 const port = Deno.env.get("PORT") || 3000
@@ -19,6 +21,17 @@ app.use(express.static(path.join(Deno.cwd(), "./images")));
 app.use(express.static(path.join(Deno.cwd(), "./dist")));
 app.use(express.json())
 app.use(cookieParser())
+
+function deleteGuest(session: Session) {
+  console.log("Deleting guest:", session.userId)
+
+  sessions.delete(session.id)
+  matches.delete(session.userId)
+
+  for (const chatId of chats.allChats(session.userId)) {
+    chats.delete(chatId)
+  }
+}
 
 app.use((req, res, next) => {
   console.log(`[${req.ip}] ${req.method} ${req.url}`)
@@ -38,14 +51,61 @@ app.use((req, res, next) => {
   next()
 })
 
+const btoi = (b: boolean) => b ? 1 : 0
 app.get('/api/match', (req, res) => {
-  const profile = profiles.getAny()
-  if (!profile) {
+  const userId = sessions.get(auth(req))?.userId
+  if (!userId) {
+    res.status(401).send()
+    return
+  }
+
+  let wantsNext = !!req.query.next?.toString() 
+  const didLike = !!req.query.like?.toString() 
+  const didLove = !!req.query.love?.toString() 
+
+  if (btoi(wantsNext) + btoi(didLike) + btoi(didLove) > 1) {
+    res.status(400).send()
+    return
+  }
+
+  if (didLike || didLove) {
+    const previous = matches.previous(userId)
+    if (!previous) { res.status(404).send(); return }
+
+    const chatId = chats.id(previous.id, userId)
+    chats.get(chatId)
+
+    previous.stats.matches++
+    if (didLove) {
+      previous.stats.loves++
+
+      chats.generateMessage(chatId, previous.id)
+    } else {
+      if (Math.random() > 0.5) {
+        chats.generateMessage(chatId, previous.id)
+      }
+    }
+
+    wantsNext = true // we need to skip the current match
+  }
+
+  if (wantsNext) {
+    const next = matches.next(userId)
+    if (!next) { res.status(404).send(); return }
+
+    res.status(200).send({ next })
+    return
+  }
+
+  const previous = matches.previous(userId)
+  const current = matches.current(userId)
+
+  if (!previous || !current) {
     res.status(404).send()
     return
   }
 
-  res.status(200).send({ next: profile })
+  res.status(200).send({ previous, current })
 })
 
 app.get('/api/user', (req, res) => {
@@ -97,12 +157,7 @@ app.post('/api/send', (req, res) => {
   }
 
   const id = chats.id(userId, userIdB)
-  const message: Message = {
-    id: Math.random().toString(36).substring(2, 15),
-    text,
-    timestamp: Date.now(),
-    author: userId
-  }
+  const message = ChatStore.message(text, userId)
   
   chats.addMessage(id, message)
   res.status(200).send(message)
@@ -168,8 +223,7 @@ app.post('/api/auth/logout', (req, res) => {
     return
   }
 
-  console.log("Deleting session:", req.cookies.session)
-  sessions.delete(session.id)
+  deleteGuest(session)
   res.clearCookie("session")
   res.status(200).send()
 })
