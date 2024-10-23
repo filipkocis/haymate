@@ -47,7 +47,6 @@ export default function MatchCardProfile({ profile }: { profile: Profile }) {
               <span className="bg-primary rounded-xl px-2 py-0.5 text-sm">{profile.details.age}</span>
               <span className="bg-primary rounded-xl px-2 py-0.5 text-sm">{profile.details.personality}</span>
               <span className="bg-primary rounded-xl px-2 py-0.5 text-sm">{profile.details.sign}</span>
-              <span className="bg-primary rounded-xl px-2 py-0.5 text-sm">{profile.details.lookingFor}</span>
             </div>
           </div>
         </div>

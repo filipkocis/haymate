@@ -30,6 +30,13 @@ export default function MatchCardDetails({ profile }: { profile: Profile }) {
           <p className="text-sm">Haybales</p>
         </div>
       </div>
+
+      <div className="card flex flex-col gap-1 px-4 py-3 shadow-[0_0_0.8rem_0.15rem_hsl(var(--border))]">
+        <h2 className="text-lg font-semibold">Looking For</h2>
+        <div className="flex flex-wrap gap-2 text-sm text-black [&_span]:bg-primary [&_span]:rounded-xl [&_span]:px-2 [&_span]:py-0.5">
+          <span>{profile.details.lookingFor}</span>
+        </div>
+      </div>
       
       <div className="card px-4 py-3 shadow-[0_0_0.8rem_0.15rem_hsl(var(--border))]">
         <h2 className="text-lg font-semibold">Bio</h2>
