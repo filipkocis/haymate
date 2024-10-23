@@ -7,6 +7,7 @@ import Match from './pages/match/page'
 import Messages from './pages/messages/page'
 import ThemeProvider from './context/ThemeProvider'
 import SessionProvider from './context/SessionProvider'
+import Settings from './pages/settings/page'
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
               <Route path="match" element={<Match />} />
               <Route path="messages" element={<Messages />} />
               <Route path="messages/:userId" element={<Messages />} />
+              <Route path="settings" element={<Settings />} />
               <Route path="*" element={<NoPage />} />
             </Route>
           </Routes>
