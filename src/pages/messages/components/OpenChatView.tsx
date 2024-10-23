@@ -50,7 +50,10 @@ export default function OpenChatView({ className }: { className?: string }) {
     load()
   }, [chatWithId])
 
-  if (!chatWithId) return <NoChatSelected />;
+  if (!chatWithId) {
+    if (maxLg) return null;
+    return <NoChatSelected />;
+  }
 
   async function handleSend() {
     if (!inputRef.current) return;
