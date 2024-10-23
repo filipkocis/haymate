@@ -80,7 +80,9 @@ export default function Match() {
       <MatchCard 
         profile={current}
         className={cn(
-          switcheroo && "duration-500 transition-all opacity-0 -translate-x-1/3 z-10 rotate-[-30deg]",
+          !!switcheroo && "duration-500 transition-all opacity-0 z-10",
+          switcheroo === "next" && "-translate-x-1/3 rotate-[-30deg]",
+          (switcheroo && switcheroo !== "next") && "translate-x-1/3 rotate-[30deg]",
         )} 
       />
       <MatchButtons 
