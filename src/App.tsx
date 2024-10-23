@@ -8,6 +8,7 @@ import Messages from './pages/messages/page'
 import ThemeProvider from './context/ThemeProvider'
 import SessionProvider from './context/SessionProvider'
 import Settings from './pages/settings/page'
+import Explore from './pages/explore/page'
 
 export default function App() {
   return (
@@ -16,7 +17,7 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>
-              <Route index element={<NoPage />} />
+              <Route index element={<Explore />} />
               <Route path="login" element={<Login />} />
               <Route path="match" element={<Match />} />
               <Route path="messages" element={<Messages />} />
